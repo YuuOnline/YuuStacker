@@ -1,4 +1,5 @@
 import { hoverCubes } from "./HoverCubes";
+import { Color } from "./Yuu API/Basic Types/Color";
 import { Quaternion } from "./Yuu API/Basic Types/Quaternion";
 import { Vector3 } from "./Yuu API/Basic Types/Vector3";
 import { inWorldConsole } from "./Yuu API/Console";
@@ -11,12 +12,14 @@ function start() {
 
   console.log('Calling startNewGame!');
 
-  startNewGame();
+  startNewGame('Rainbow');
 }
 
 const count = 32;
 
-function startNewGame() {
+function startNewGame(theme: Color | 'Rainbow') {
+  hoverCubes.setTheme(theme);
+  
   hoverCubes.destroyPreviousCubes();
 
   for (let i = 0; i < count; i++) {
