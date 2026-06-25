@@ -40,7 +40,7 @@ function loop() {
         const pos = cube.pos;
         const curY = pos.y;
 
-        pos.y = 0.875 + (Math.random() * 0.25);
+        pos.y = 1.375 + (Math.random() * 0.25);
 
         overTime.moveTo.start(cube, pos, Math.floor((Math.abs(curY - pos.y) / 0.25) * 6_000));
       }
@@ -93,7 +93,7 @@ function onUpdate(deltaTime: number) {
         if (rightHandCube) {
           stackedCubes.push(rightHandCube);
 
-          overTime.moveTo.start(rightHandCube, pedestalPos.add(new Vector3(0, ((scale + 0.015) * stackedCubes.length) + (scale / 2), 0)), 200);
+          overTime.moveTo.start(rightHandCube, pedestalPos.add(new Vector3(0, ((scale + 0.005) * stackedCubes.length) + (scale / 2), 0)), 200);
           // overTime.rotateTo.start(rightHandCube, Quaternion.one, 200);
 
           rightHandCube.trigger.delete();
@@ -104,7 +104,7 @@ function onUpdate(deltaTime: number) {
         if (leftHandCube) {
           stackedCubes.push(leftHandCube);
 
-          overTime.moveTo.start(leftHandCube, pedestalPos.add(new Vector3(0, ((scale + 0.015) * stackedCubes.length) + (scale / 2), 0)), 200);
+          overTime.moveTo.start(leftHandCube, pedestalPos.add(new Vector3(0, ((scale + 0.005) * stackedCubes.length) + (scale / 2), 0)), 200);
           // overTime.rotateTo.start(leftHandCube, Quaternion.one, 200);
 
           leftHandCube.trigger.delete();
@@ -137,7 +137,7 @@ const numberOfTilesOutwards = 12;
 const scale = 0.25;
 
 function spawn() {
-  const yCoord = 1;
+  const yCoord = 1.5;
 
   let xCoord = Math.floor(Math.random() * ((numberOfTilesOutwards * 2) + 1)) - numberOfTilesOutwards;
   let zCoord = Math.floor(Math.random() * (numberOfTilesOutwards + 1));
