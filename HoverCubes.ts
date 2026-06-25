@@ -2,6 +2,7 @@ import { Async } from "./Yuu API/Async";
 import { Color } from "./Yuu API/Basic Types/Color";
 import { Quaternion } from "./Yuu API/Basic Types/Quaternion";
 import { Vector3 } from "./Yuu API/Basic Types/Vector3"
+import { Controller } from "./Yuu API/Controller";
 import { Entity } from "./Yuu API/Entity";
 import { overTime } from "./Yuu API/MotionOverTime";
 import { Player } from "./Yuu API/Player";
@@ -19,6 +20,9 @@ export const hoverCubes = {
 registerStart(start);
 function start() {
   Async.setInterval(() => { loop(); }, 100);
+
+  Controller.subscribe('rightGrip', 'Released', () => { rightHandCube = undefined; });
+  Controller.subscribe('leftGrip', 'Released', () => { leftHandCube = undefined; });
 }
 
 function loop() {
@@ -128,15 +132,6 @@ function spawn() {
       if (leftHandCube === undefined) {
         leftHandCube = cube;
       }
-    }
-  });
-
-  cube.trigger.setEmptyFunction(() => {
-    if (rightHandCube === cube) {
-      rightHandCube = undefined;
-    }
-    if (leftHandCube === cube) {
-      leftHandCube = undefined;
     }
   });
 }
