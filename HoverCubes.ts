@@ -72,6 +72,7 @@ function setTheme(theme: Color | 'Rainbow') {
     colors.push(Color.green);
     colors.push(Color.blue);
     colors.push(new Color(0.5, 0, 1));
+    colors.push(Color.magenta);
   }
   else {
     colors.push(theme);
@@ -83,6 +84,7 @@ function setTheme(theme: Color | 'Rainbow') {
     colors.push(Color.fromHSV((hue + 0.15) % 1, 1, 1));
     colors.push(Color.fromHSV((hue + 0.95) % 1, 1, 1));
     colors.push(Color.fromHSV((hue + 0.9) % 1, 1, 1));
+    colors.push(Color.fromHSV((hue + 0.85) % 1, 1, 1));
   }
 }
 
