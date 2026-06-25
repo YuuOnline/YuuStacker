@@ -28,11 +28,11 @@ function loop() {
   cubes.forEach((cube) => {
     if (Math.random() > 0.9) {
       const pos = cube.pos;
-      const random = Math.random();
+      const curY = pos.y;
 
-      pos.y = 0.875 + (random * 0.25);
+      pos.y = 0.875 + (Math.random() * 0.25);
 
-      overTime.moveTo.start(cube, pos, Math.floor(random * 6_000));
+      overTime.moveTo.start(cube, pos, Math.floor((Math.abs(curY - pos.y) / 0.25) * 6_000));
     }
 
     if (Math.random() > 0.9) {
