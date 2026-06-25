@@ -15,7 +15,7 @@ function start() {
   startNewGame('Rainbow');
 }
 
-const count = 32;
+const count = 64;
 
 function startNewGame(theme: Color | 'Rainbow') {
   hoverCubes.setTheme(theme);
