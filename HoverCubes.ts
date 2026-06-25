@@ -79,7 +79,7 @@ function setTheme(theme: Color | 'Rainbow') {
 
     const hue = toHSV(theme).x;
 
-    console.log(hue);
+    console.log(toHSV(theme));
     colors.push(Color.fromHSV((hue + 0.05) % 1, 1, 0.75));
     colors.push(Color.fromHSV((hue + 0.1) % 1, 1, 1));
     colors.push(Color.fromHSV((hue + 0.15) % 1, 1, 0.75));
@@ -109,8 +109,8 @@ function toHSV(color: Color): Vector3 {
       h = (color.r - color.g) / delta + 4;
     }
 
-    h *= 60;
-    if (h < 0) h += 360;
+    h /= 6;
+    if (h < 0) h += 1;
   }
 
   return new Vector3(h, s, v);
