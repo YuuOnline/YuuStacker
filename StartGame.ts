@@ -1,4 +1,4 @@
-import { spawnHoverCube } from "./SpawnHoverCube";
+import { hoverCubes } from "./HoverCubes";
 import { Quaternion } from "./Yuu API/Basic Types/Quaternion";
 import { Vector3 } from "./Yuu API/Basic Types/Vector3";
 import { inWorldConsole } from "./Yuu API/Console";
@@ -17,7 +17,9 @@ function start() {
 const count = 32;
 
 function startNewGame() {
+  hoverCubes.destroyPreviousCubes();
+
   for (let i = 0; i < count; i++) {
-    spawnHoverCube.spawn();
+    hoverCubes.spawn();
   }
 }
