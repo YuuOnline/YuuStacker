@@ -34,7 +34,7 @@ function spawn() {
   let xCoord = Math.floor(Math.random() * ((numberOfTilesOutwards * 2) + 1)) - numberOfTilesOutwards;
   let zCoord = Math.floor(Math.random() * (numberOfTilesOutwards + 1));
 
-  let key = xCoord.toString() + '|' + yCoord.toString();
+  let key = xCoord.toString() + '|' + zCoord.toString();
 
   let i = 0;
 
@@ -42,13 +42,11 @@ function spawn() {
     xCoord = Math.floor(Math.random() * ((numberOfTilesOutwards * 2) + 1)) - numberOfTilesOutwards;
     zCoord = Math.floor(Math.random() * (numberOfTilesOutwards + 1));
 
-    key = xCoord.toString() + '|' + yCoord.toString();
+    key = xCoord.toString() + '|' + zCoord.toString();
 
     i++;
   }
   
-  console.log(i);
-
   gridPositionsOccupied.push(key);
   
   const pos = new Vector3(xCoord * gridSpaceDiameter, yCoord, -zCoord * gridSpaceDiameter);
