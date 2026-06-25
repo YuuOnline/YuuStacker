@@ -4,6 +4,7 @@ import { Quaternion } from "./Yuu API/Basic Types/Quaternion";
 import { Vector3 } from "./Yuu API/Basic Types/Vector3"
 import { Controller } from "./Yuu API/Controller";
 import { Entity } from "./Yuu API/Entity";
+import { Events } from "./Yuu API/Events";
 import { overTime } from "./Yuu API/MotionOverTime";
 import { Player } from "./Yuu API/Player";
 import { registerStart } from "./Yuu API/RegisterStart";
@@ -22,7 +23,9 @@ const pedestalPos = new Vector3(0, 0.25, -10);
 
 registerStart(start);
 function start() {
-  Async.setInterval(() => { loop(); }, 50);
+  Async.setInterval(() => { loop(); }, 100);
+
+  Events.onPhysicsUpdate((deltaTime) => { onUpdate(deltaTime); });
 
   Controller.subscribe('rightGrip', 'Released', () => { rightHandCube = undefined; });
   Controller.subscribe('leftGrip', 'Released', () => { leftHandCube = undefined; });
@@ -33,7 +36,7 @@ function start() {
 function loop() {
   cubes.forEach((cube) => {
     if (!stackedCubes.includes(cube) && cube !== leftHandCube && cube !== rightHandCube) {
-      if (Math.random() > 0.95) {
+      if (Math.random() > 0.9) {
         const pos = cube.pos;
         const curY = pos.y;
 
@@ -42,12 +45,14 @@ function loop() {
         overTime.moveTo.start(cube, pos, Math.floor((Math.abs(curY - pos.y) / 0.25) * 6_000));
       }
 
-      if (Math.random() > 0.95) {
+      if (Math.random() > 0.9) {
         // overTime.rotateTo.start(cube, Quaternion.fromEuler(new Vector3(0, Math.random() * 2 * Math.PI, 0)), 10_000);
       }
     }
   });
+}
 
+function onUpdate(deltaTime: number) {
   const handPositions: [Vector3, boolean][] = [];
 
   if (rightHandCube) {
@@ -58,7 +63,7 @@ function loop() {
     handForward.y = 0;
     handForward.normalizeInPlace();
 
-    overTime.moveTo.start(rightHandCube, handPos, 100);
+    rightHandCube.pos = handPos;
     // overTime.rotateTo.start(rightHandCube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
 
     handPositions.push([handPos, true]);
@@ -72,7 +77,7 @@ function loop() {
     handForward.y = 0;
     handForward.normalizeInPlace();
 
-    overTime.moveTo.start(leftHandCube, handPos, 100);
+    leftHandCube.pos = handPos;
     // overTime.rotateTo.start(leftHandCube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
 
     handPositions.push([handPos, false]);
