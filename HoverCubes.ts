@@ -2,6 +2,7 @@ import { Color } from "./Yuu API/Basic Types/Color";
 import { Quaternion } from "./Yuu API/Basic Types/Quaternion";
 import { Vector3 } from "./Yuu API/Basic Types/Vector3"
 import { Entity } from "./Yuu API/Entity";
+import { Player } from "./Yuu API/Player";
 import { spawnPrimitive } from "./Yuu API/SpawnPrimitive"
 
 
@@ -58,8 +59,18 @@ function spawn() {
 
   cube.trigger.initialize(scale, scale * 2);
 
+  let isRight = true;
+
+  cube.trigger.setOccupiedFunction((payload) => {
+    const rightHandPos = Player.rightHand.position.get() ?? Vector3.zero;
+
+    isRight = (rightHandPos.distanceTo(payload.pos) < 0.25);
+  });
+
   cube.trigger.setOnUpdateFunction((payload) => {
-    cube.pos = payload.positions[0];
+    const handPos = (isRight ? Player.rightHand.position.get() : Player.leftHand.position.get()) ?? Vector3.up;
+
+    cube.pos = handPos;
   });
 }
 
