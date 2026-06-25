@@ -1,7 +1,9 @@
+import { Async } from "./Yuu API/Async";
 import { Color } from "./Yuu API/Basic Types/Color";
 import { Quaternion } from "./Yuu API/Basic Types/Quaternion";
 import { Vector3 } from "./Yuu API/Basic Types/Vector3"
 import { Entity } from "./Yuu API/Entity";
+import { overTime } from "./Yuu API/MotionOverTime";
 import { Player } from "./Yuu API/Player";
 import { spawnPrimitive } from "./Yuu API/SpawnPrimitive"
 
@@ -60,17 +62,27 @@ function spawn() {
   cube.trigger.initialize(scale, scale * 2);
 
   let isRight = true;
+  let asyncID = 0;
+
 
   cube.trigger.setOccupiedFunction((payload) => {
     const rightHandPos = Player.rightHand.position.get() ?? Vector3.zero;
 
     isRight = (rightHandPos.distanceTo(payload.pos) < 0.25);
+
+    asyncID = Async.setInterval(() => {
+      const handPos = (isRight ? Player.rightHand.position.get() : Player.leftHand.position.get()) ?? Vector3.up;
+      handPos.subtractInPlace(new Vector3(0, 0.25, 0));
+      
+      const handRot = (isRight ? Player.rightHand.rotation.get() : Player.leftHand.rotation.get()) ?? Quaternion.one;
+      
+      overTime.moveTo.start(cube, handPos, 200);
+      overTime.rotateTo.start(cube, handRot, 2_000);
+    }, 100);
   });
 
-  cube.trigger.setOnUpdateFunction((payload) => {
-    const handPos = (isRight ? Player.rightHand.position.get() : Player.leftHand.position.get()) ?? Vector3.up;
-
-    cube.pos = handPos;
+  cube.trigger.setEmptyFunction(() => {
+    Async.clearTimer(asyncID);
   });
 }
 
