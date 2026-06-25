@@ -47,6 +47,8 @@ function spawn() {
     i++;
   }
   
+  console.log(i);
+
   gridPositionsOccupied.push(key);
   
   const pos = new Vector3(xCoord * gridSpaceDiameter, yCoord, -zCoord * gridSpaceDiameter);
