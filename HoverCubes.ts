@@ -17,12 +17,17 @@ export const hoverCubes = {
 }
 
 
+const pedestalPos = new Vector3(0, 0.25, -10);
+
+
 registerStart(start);
 function start() {
   Async.setInterval(() => { loop(); }, 50);
 
   Controller.subscribe('rightGrip', 'Released', () => { rightHandCube = undefined; });
   Controller.subscribe('leftGrip', 'Released', () => { leftHandCube = undefined; });
+
+  spawnPrimitive.cube(pedestalPos, new Vector3(0.35, 0.5, 0.35), Quaternion.one, Color.white, 0.85, true, 'Static', undefined);
 }
 
 function loop() {
@@ -43,6 +48,8 @@ function loop() {
     }
   });
 
+  const handPositions: [Vector3, boolean][] = [];
+
   if (rightHandCube) {
     const handPos = Player.rightHand.position.get() ?? Vector3.up;
     handPos.subtractInPlace(new Vector3(0, 0.25, 0));
@@ -53,6 +60,8 @@ function loop() {
 
     overTime.moveTo.start(rightHandCube, handPos, 100);
     // overTime.rotateTo.start(rightHandCube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
+
+    handPositions.push([handPos, true]);
   }
 
   if (leftHandCube) {
@@ -65,7 +74,36 @@ function loop() {
 
     overTime.moveTo.start(leftHandCube, handPos, 100);
     // overTime.rotateTo.start(leftHandCube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
+
+    handPositions.push([handPos, false]);
   }
+
+  handPositions.forEach(([handPos, isRight]) => {
+    const dir = handPos.subtract(pedestalPos);
+
+    dir.y = 0;
+
+    if (dir.magnitude() < 0.25) {
+      if (isRight) {
+        if (rightHandCube) {
+          stackedCubes.push(rightHandCube);
+
+          overTime.moveTo.start(rightHandCube, pedestalPos.add(new Vector3(0, (scale * stackedCubes.length) + (scale / 2), 0)), 200);
+
+          rightHandCube = undefined;
+        }
+      }
+      else {
+        if (leftHandCube) {
+          stackedCubes.push(leftHandCube);
+
+          overTime.moveTo.start(leftHandCube, pedestalPos.add(new Vector3(0, (scale * stackedCubes.length) + (scale / 2), 0)), 200);
+
+          leftHandCube = undefined;
+        }
+      }
+    }
+  });
 }
 
 
@@ -123,7 +161,7 @@ function spawn() {
   cube.trigger.setOccupiedFunction((payload) => {
     if (cube !== rightHandCube && cube !== leftHandCube) {
       const rightHandPos = Player.rightHand.position.get() ?? Vector3.zero;
-  
+
       if (rightHandPos.distanceTo(payload.pos) < 0.25) {
         if (rightHandCube === undefined) {
           rightHandCube = cube;
