@@ -78,9 +78,9 @@ function spawn() {
       handForward.y = 0;
       handForward.normalizeInPlace();
 
-      overTime.rotateTo.start(cube, Quaternion.lookAt(handForward, Vector3.up), 2_000);
-      // overTime.moveTo.start(cube, handPos, 200);
-      cube.pos = handPos;
+      // overTime.rotateTo.start(cube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
+      overTime.moveTo.start(cube, handPos, 200);
+      // cube.pos = handPos;
     }, 100);
   });
 
