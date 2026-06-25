@@ -28,9 +28,18 @@ function loop() {
   cubes.forEach((cube) => {
     if (Math.random() > 0.9) {
       const pos = cube.pos;
-      pos.y = 0.875 + (Math.random() * 0.25);
+      const random = Math.random();
 
-      overTime.moveTo.start(cube, pos, 3_000);
+      pos.y = 0.875 + (random * 0.25);
+
+
+      overTime.moveTo.start(cube, pos, Math.floor(random * 3_000));
+    }
+
+    if (Math.random() > 0.9) {
+      Async.setTimeout(() => {
+        overTime.rotateTo.start(cube, Quaternion.fromEuler(new Vector3(0, Math.random() * 2 * Math.PI, 0)), 10_000);
+      }, 10);
     }
   });
 }
@@ -99,9 +108,11 @@ function spawn() {
       handForward.y = 0;
       handForward.normalizeInPlace();
 
-      // overTime.rotateTo.start(cube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
       overTime.moveTo.start(cube, handPos, 200);
-      // cube.pos = handPos;
+
+      Async.setTimeout(() => {
+        overTime.rotateTo.start(cube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
+      }, 10);
     }, 100);
   });
 
