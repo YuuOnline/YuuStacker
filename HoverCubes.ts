@@ -79,12 +79,13 @@ function setTheme(theme: Color | 'Rainbow') {
 
     const hue = toHSV(theme).x;
 
-    colors.push(Color.fromHSV((hue + 0.05) % 1, 1, 1));
+    console.log(hue);
+    colors.push(Color.fromHSV((hue + 0.05) % 1, 1, 0.75));
     colors.push(Color.fromHSV((hue + 0.1) % 1, 1, 1));
-    colors.push(Color.fromHSV((hue + 0.15) % 1, 1, 1));
-    colors.push(Color.fromHSV((hue + 0.95) % 1, 1, 1));
+    colors.push(Color.fromHSV((hue + 0.15) % 1, 1, 0.75));
+    colors.push(Color.fromHSV((hue + 0.95) % 1, 1, 0.75));
     colors.push(Color.fromHSV((hue + 0.9) % 1, 1, 1));
-    colors.push(Color.fromHSV((hue + 0.85) % 1, 1, 1));
+    colors.push(Color.fromHSV((hue + 0.85) % 1, 1, 0.75));
   }
 }
 
