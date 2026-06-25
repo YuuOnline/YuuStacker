@@ -55,6 +55,12 @@ function spawn() {
   colorIndex = (colorIndex + 1) % colors.length;
 
   cubes.push(cube);
+
+  cube.trigger.initialize(scale, scale * 2);
+
+  cube.trigger.setOnUpdateFunction((payload) => {
+    cube.pos = payload.positions[0];
+  });
 }
 
 
@@ -79,13 +85,12 @@ function setTheme(theme: Color | 'Rainbow') {
 
     const hue = toHSV(theme).x;
 
-    console.log(toHSV(theme));
-    colors.push(Color.fromHSV((hue + 0.05) % 1, 1, 0.75));
+    colors.push(Color.fromHSV((hue + 0.05) % 1, 1, 0.5));
     colors.push(Color.fromHSV((hue + 0.1) % 1, 1, 1));
-    colors.push(Color.fromHSV((hue + 0.15) % 1, 1, 0.75));
-    colors.push(Color.fromHSV((hue + 0.95) % 1, 1, 0.75));
+    colors.push(Color.fromHSV((hue + 0.15) % 1, 1, 0.5));
+    colors.push(Color.fromHSV((hue + 0.95) % 1, 1, 0.5));
     colors.push(Color.fromHSV((hue + 0.9) % 1, 1, 1));
-    colors.push(Color.fromHSV((hue + 0.85) % 1, 1, 0.75));
+    colors.push(Color.fromHSV((hue + 0.85) % 1, 1, 0.5));
   }
 }
 
