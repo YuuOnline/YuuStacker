@@ -121,16 +121,18 @@ function spawn() {
   cube.trigger.initialize(scale, scale * 2);
 
   cube.trigger.setOccupiedFunction((payload) => {
-    const rightHandPos = Player.rightHand.position.get() ?? Vector3.zero;
-
-    if (rightHandPos.distanceTo(payload.pos) < 0.25) {
-      if (rightHandCube === undefined) {
-        rightHandCube = cube;
+    if (cube !== rightHandCube && cube !== leftHandCube) {
+      const rightHandPos = Player.rightHand.position.get() ?? Vector3.zero;
+  
+      if (rightHandPos.distanceTo(payload.pos) < 0.25) {
+        if (rightHandCube === undefined) {
+          rightHandCube = cube;
+        }
       }
-    }
-    else {
-      if (leftHandCube === undefined) {
-        leftHandCube = cube;
+      else {
+        if (leftHandCube === undefined) {
+          leftHandCube = cube;
+        }
       }
     }
   });
