@@ -5,6 +5,7 @@ import { Vector3 } from "./Yuu API/Basic Types/Vector3"
 import { Entity } from "./Yuu API/Entity";
 import { overTime } from "./Yuu API/MotionOverTime";
 import { Player } from "./Yuu API/Player";
+import { registerStart } from "./Yuu API/RegisterStart";
 import { spawnPrimitive } from "./Yuu API/SpawnPrimitive"
 
 
@@ -12,6 +13,26 @@ export const hoverCubes = {
   destroyPreviousCubes,
   spawn,
   setTheme,
+}
+
+
+registerStart(start);
+function start() {
+  Async.setInterval(() => { loop(); }, 100);
+}
+
+function loop() {
+  // Rotate slowly
+  // Why is rotate not working when moving?
+
+  cubes.forEach((cube) => {
+    if (Math.random() > 0.9) {
+      const pos = cube.pos;
+      pos.y = 0.875 + (Math.random() * 0.25);
+
+      overTime.moveTo.start(cube, pos, 3_000);
+    }
+  });
 }
 
 
