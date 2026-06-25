@@ -27,7 +27,7 @@ function start() {
   Controller.subscribe('rightGrip', 'Released', () => { rightHandCube = undefined; });
   Controller.subscribe('leftGrip', 'Released', () => { leftHandCube = undefined; });
 
-  spawnPrimitive.cube(pedestalPos, new Vector3(0.35, 0.5, 0.35), Quaternion.one, Color.white, 0.85, true, 'Static', undefined);
+  spawnPrimitive.cube(pedestalPos, new Vector3(0.45, 0.5, 0.45), Quaternion.one, Color.black, 0.65, true, 'Static', undefined);
 }
 
 function loop() {
@@ -88,8 +88,10 @@ function loop() {
         if (rightHandCube) {
           stackedCubes.push(rightHandCube);
 
-          overTime.moveTo.start(rightHandCube, pedestalPos.add(new Vector3(0, (scale * stackedCubes.length) + (scale / 2), 0)), 200);
+          overTime.moveTo.start(rightHandCube, pedestalPos.add(new Vector3(0, ((scale + 0.015) * stackedCubes.length) + (scale / 2), 0)), 200);
+          // overTime.rotateTo.start(rightHandCube, Quaternion.one, 200);
 
+          rightHandCube.trigger.delete();
           rightHandCube = undefined;
         }
       }
@@ -97,8 +99,10 @@ function loop() {
         if (leftHandCube) {
           stackedCubes.push(leftHandCube);
 
-          overTime.moveTo.start(leftHandCube, pedestalPos.add(new Vector3(0, (scale * stackedCubes.length) + (scale / 2), 0)), 200);
+          overTime.moveTo.start(leftHandCube, pedestalPos.add(new Vector3(0, ((scale + 0.015) * stackedCubes.length) + (scale / 2), 0)), 200);
+          // overTime.rotateTo.start(leftHandCube, Quaternion.one, 200);
 
+          leftHandCube.trigger.delete();
           leftHandCube = undefined;
         }
       }
