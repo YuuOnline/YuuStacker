@@ -165,7 +165,7 @@ function spawn() {
 
   cubes.push(cube);
 
-  cube.trigger.initialize(scale, scale * 2);
+  cube.trigger.initialize(scale, scale * 2, ['Left Hand', 'Right Hand'], undefined);
 
   cube.trigger.setOccupiedFunction((payload) => {
     if (cube !== rightHandCube && cube !== leftHandCube) {
