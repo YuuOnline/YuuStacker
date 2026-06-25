@@ -12,8 +12,9 @@ export const spawnHoverCube = {
 // Know where other blocks are so they don't overlap
 
 const diameter = 8;
+const radius = diameter / 2;
 const scale = 0.35;
 
 function spawn() {
-  spawnPrimitive.cube(new Vector3(Math.random() * diameter, 1, Math.random() * diameter), new Vector3(scale, scale, scale), Quaternion.fromEuler(new Vector3(0, Math.random(), 0)), Color.randomHue(), 0.75, false, 'Animated', undefined);
+  spawnPrimitive.cube(new Vector3((Math.random() * diameter) - radius, 1, Math.random() * -diameter), new Vector3(scale, scale, scale), Quaternion.fromEuler(new Vector3(0, Math.random(), 0)), Color.randomHue(), 0.75, false, 'Animated', undefined);
 }
