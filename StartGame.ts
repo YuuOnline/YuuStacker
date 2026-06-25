@@ -12,7 +12,7 @@ function start() {
 
   console.log('Calling startNewGame!');
 
-  startNewGame('Rainbow');
+  startNewGame(new Color(0.5, 0, 1));
 }
 
 const count = 64;
