@@ -22,27 +22,55 @@ function start() {
 }
 
 function loop() {
-  // Rotate slowly
-  // Why is rotate not working when moving?
-
   cubes.forEach((cube) => {
-    if (Math.random() > 0.9) {
-      const pos = cube.pos;
-      const curY = pos.y;
+    if (!stackedCubes.includes(cube) && cube !== leftHandCube && cube !== rightHandCube) {
+      if (Math.random() > 0.9) {
+        const pos = cube.pos;
+        const curY = pos.y;
 
-      pos.y = 0.875 + (Math.random() * 0.25);
+        pos.y = 0.875 + (Math.random() * 0.25);
 
-      overTime.moveTo.start(cube, pos, Math.floor((Math.abs(curY - pos.y) / 0.25) * 6_000));
-    }
+        overTime.moveTo.start(cube, pos, Math.floor((Math.abs(curY - pos.y) / 0.25) * 6_000));
+      }
 
-    if (Math.random() > 0.9) {
-      // overTime.rotateTo.start(cube, Quaternion.fromEuler(new Vector3(0, Math.random() * 2 * Math.PI, 0)), 10_000);
+      if (Math.random() > 0.9) {
+        // overTime.rotateTo.start(cube, Quaternion.fromEuler(new Vector3(0, Math.random() * 2 * Math.PI, 0)), 10_000);
+      }
     }
   });
+
+  if (rightHandCube) {
+    const handPos = Player.rightHand.position.get() ?? Vector3.up;
+    handPos.subtractInPlace(new Vector3(0, 0.25, 0));
+
+    const handForward = Player.rightHand.forward.get() ?? Vector3.forward;
+    handForward.y = 0;
+    handForward.normalizeInPlace();
+
+    overTime.moveTo.start(rightHandCube, handPos, 200);
+    // overTime.rotateTo.start(rightHandCube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
+  }
+
+  if (leftHandCube) {
+    const handPos = Player.leftHand.position.get() ?? Vector3.up;
+    handPos.subtractInPlace(new Vector3(0, 0.25, 0));
+
+    const handForward = Player.leftHand.forward.get() ?? Vector3.forward;
+    handForward.y = 0;
+    handForward.normalizeInPlace();
+
+    overTime.moveTo.start(leftHandCube, handPos, 200);
+    // overTime.rotateTo.start(leftHandCube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
+  }
 }
 
 
 const cubes: Entity[] = [];
+const stackedCubes: Entity[] = [];
+
+let leftHandCube: Entity | undefined;
+let rightHandCube: Entity | undefined;
+
 const gridPositionsOccupied: string[] = [];
 
 function destroyPreviousCubes() {
@@ -88,30 +116,28 @@ function spawn() {
 
   cube.trigger.initialize(scale, scale * 2);
 
-  let isRight = true;
-  let asyncID = 0;
-
-
   cube.trigger.setOccupiedFunction((payload) => {
     const rightHandPos = Player.rightHand.position.get() ?? Vector3.zero;
 
-    isRight = (rightHandPos.distanceTo(payload.pos) < 0.25);
-
-    asyncID = Async.setInterval(() => {
-      const handPos = (isRight ? Player.rightHand.position.get() : Player.leftHand.position.get()) ?? Vector3.up;
-      handPos.subtractInPlace(new Vector3(0, 0.25, 0));
-
-      const handForward = (isRight ? Player.rightHand.forward.get() : Player.leftHand.forward.get()) ?? Vector3.forward;
-      handForward.y = 0;
-      handForward.normalizeInPlace();
-
-      overTime.moveTo.start(cube, handPos, 200);
-      // overTime.rotateTo.start(cube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
-    }, 100);
+    if (rightHandPos.distanceTo(payload.pos) < 0.25) {
+      if (rightHandCube === undefined) {
+        rightHandCube = cube;
+      }
+    }
+    else {
+      if (leftHandCube === undefined) {
+        leftHandCube = cube;
+      }
+    }
   });
 
   cube.trigger.setEmptyFunction(() => {
-    Async.clearTimer(asyncID);
+    if (rightHandCube === cube) {
+      rightHandCube = undefined;
+    }
+    if (leftHandCube === cube) {
+      leftHandCube = undefined;
+    }
   });
 }
 
