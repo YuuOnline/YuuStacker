@@ -19,7 +19,7 @@ export const hoverCubes = {
 
 registerStart(start);
 function start() {
-  Async.setInterval(() => { loop(); }, 100);
+  Async.setInterval(() => { loop(); }, 50);
 
   Controller.subscribe('rightGrip', 'Released', () => { rightHandCube = undefined; });
   Controller.subscribe('leftGrip', 'Released', () => { leftHandCube = undefined; });
@@ -28,7 +28,7 @@ function start() {
 function loop() {
   cubes.forEach((cube) => {
     if (!stackedCubes.includes(cube) && cube !== leftHandCube && cube !== rightHandCube) {
-      if (Math.random() > 0.9) {
+      if (Math.random() > 0.95) {
         const pos = cube.pos;
         const curY = pos.y;
 
@@ -37,7 +37,7 @@ function loop() {
         overTime.moveTo.start(cube, pos, Math.floor((Math.abs(curY - pos.y) / 0.25) * 6_000));
       }
 
-      if (Math.random() > 0.9) {
+      if (Math.random() > 0.95) {
         // overTime.rotateTo.start(cube, Quaternion.fromEuler(new Vector3(0, Math.random() * 2 * Math.PI, 0)), 10_000);
       }
     }
@@ -51,7 +51,7 @@ function loop() {
     handForward.y = 0;
     handForward.normalizeInPlace();
 
-    overTime.moveTo.start(rightHandCube, handPos, 200);
+    overTime.moveTo.start(rightHandCube, handPos, 100);
     // overTime.rotateTo.start(rightHandCube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
   }
 
@@ -63,7 +63,7 @@ function loop() {
     handForward.y = 0;
     handForward.normalizeInPlace();
 
-    overTime.moveTo.start(leftHandCube, handPos, 200);
+    overTime.moveTo.start(leftHandCube, handPos, 100);
     // overTime.rotateTo.start(leftHandCube, Quaternion.lookAt(handForward, Vector3.up), 5_000);
   }
 }
