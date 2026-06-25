@@ -73,11 +73,11 @@ function spawn() {
     asyncID = Async.setInterval(() => {
       const handPos = (isRight ? Player.rightHand.position.get() : Player.leftHand.position.get()) ?? Vector3.up;
       handPos.subtractInPlace(new Vector3(0, 0.25, 0));
-      
+
       const handRot = (isRight ? Player.rightHand.rotation.get() : Player.leftHand.rotation.get()) ?? Quaternion.one;
       
-      overTime.moveTo.start(cube, handPos, 200);
       overTime.rotateTo.start(cube, handRot, 2_000);
+      overTime.moveTo.start(cube, handPos, 200);
     }, 100);
   });
 
